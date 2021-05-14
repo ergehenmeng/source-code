@@ -184,7 +184,7 @@ public class AsyncRpcResult implements Result {
     @Override
     public Object recreate() throws Throwable {
         RpcInvocation rpcInvocation = (RpcInvocation) invocation;
-        if (InvokeMode.FUTURE == rpcInvocation.getInvokeMode()) {
+        if (InvokeMode.FUTURE == rpcInvocation.getInvokeMode()) { // 如果是采用CompletableFuture形式的话 直接从线程变量获取(在发送请求时已经将异步结构绑定到了线程变量)
             return RpcContext.getContext().getFuture();
         }
 
