@@ -72,7 +72,7 @@ public class NacosConfigService implements ConfigService {
     private final String encode;
     
     private final ConfigFilterChainManager configFilterChainManager = new ConfigFilterChainManager();
-    
+    // 反射创建nacos配置管理对象
     public NacosConfigService(Properties properties) throws NacosException {
         ValidatorUtils.checkInitParam(properties);
         String encodeTmp = properties.getProperty(PropertyKeyConst.ENCODE);
@@ -82,7 +82,7 @@ public class NacosConfigService implements ConfigService {
             this.encode = encodeTmp.trim();
         }
         initNamespace(properties);
-        
+        // HttpAgent是配置服务代理对象,可以链接所有配置服务器
         this.agent = new MetricsHttpAgent(new ServerHttpAgent(properties));
         this.agent.start();
         this.worker = new ClientWorker(this.agent, this.configFilterChainManager, properties);

@@ -144,15 +144,15 @@ public class ServerListManager implements Closeable {
                     ContextPathUtil.normalizeContextPath(this.contentPath), this.serverListName, namespace);
         }
     }
-    
+    // nacos服务列表管理器, serverAddr逗号分隔可以注册到多台nacos上
     public ServerListManager(Properties properties) throws NacosException {
         this.isStarted = false;
         this.serverAddrsStr = properties.getProperty(PropertyKeyConst.SERVER_ADDR);
         String namespace = properties.getProperty(PropertyKeyConst.NAMESPACE);
         initParam(properties);
-        
+        // 配置nacos地址可以单独配置config节点或naming节点或者统一在根nacos节点配置server-addr
         if (StringUtils.isNotEmpty(serverAddrsStr)) {
-            this.isFixed = true;
+            this.isFixed = true; // 表示标准配置,不需要二次修改
             List<String> serverAddrs = new ArrayList<String>();
             String[] serverAddrsArr = this.serverAddrsStr.split(",");
             for (String serverAddr : serverAddrsArr) {
@@ -178,7 +178,7 @@ public class ServerListManager implements Closeable {
                 this.name = FIXED_NAME + "-" + getFixedNameSuffix(
                         this.serverUrls.toArray(new String[this.serverUrls.size()])) + "-" + namespace;
             }
-        } else {
+        } else {//通过endpoint节点单独配置
             if (StringUtils.isBlank(endpoint)) {
                 throw new NacosException(NacosException.CLIENT_INVALID_PARAM, "endpoint is blank");
             }

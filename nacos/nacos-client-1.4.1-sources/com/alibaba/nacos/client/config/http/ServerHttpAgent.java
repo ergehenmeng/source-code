@@ -277,7 +277,7 @@ public class ServerHttpAgent implements HttpAgent {
         init(properties);
         this.securityProxy.login(this.serverListMgr.getServerUrls());
         
-        // init executorService
+        // init executorService 创建单线程的线程池
         this.executorService = new ScheduledThreadPoolExecutor(1, new ThreadFactory() {
             @Override
             public Thread newThread(Runnable r) {
@@ -287,7 +287,7 @@ public class ServerHttpAgent implements HttpAgent {
                 return t;
             }
         });
-        
+        // 定时任务每隔5秒检测一下token是否过期,过期时直接登陆, 防止拉取配置失败(token过期时间由配置服务登陆时返回给客户端)
         this.executorService.scheduleWithFixedDelay(new Runnable() {
             @Override
             public void run() {

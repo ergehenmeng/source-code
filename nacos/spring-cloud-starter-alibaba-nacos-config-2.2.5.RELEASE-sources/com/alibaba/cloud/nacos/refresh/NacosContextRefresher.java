@@ -130,7 +130,7 @@ public class NacosContextRefresher
 						refreshCountIncrement();
 						nacosRefreshHistory.addRefreshRecord(dataId, group, configInfo);
 						// todo feature: support single refresh for listening
-						applicationContext.publishEvent(
+						applicationContext.publishEvent(// 发送一个RefreshEvent, 接收该消息的类 RefreshEventListener
 								new RefreshEvent(this, null, "Refresh Nacos config"));
 						if (log.isDebugEnabled()) {
 							log.debug(String.format(

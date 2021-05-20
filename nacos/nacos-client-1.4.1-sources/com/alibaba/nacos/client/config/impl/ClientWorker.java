@@ -314,14 +314,14 @@ public class ClientWorker implements Closeable {
             }
         }
     }
-    
+    // 对比内存与本地缓存的问题是否有变化
     private void checkLocalConfig(CacheData cacheData) {
         final String dataId = cacheData.dataId;
         final String group = cacheData.group;
         final String tenant = cacheData.tenant;
         File path = LocalConfigInfoProcessor.getFailoverFile(agent.getName(), dataId, group, tenant);
         
-        if (!cacheData.isUseLocalConfigInfo() && path.exists()) {
+        if (!cacheData.isUseLocalConfigInfo() && path.exists()) {// 读取本地缓存的配置信息
             String content = LocalConfigInfoProcessor.getFailover(agent.getName(), dataId, group, tenant);
             final String md5 = MD5Utils.md5Hex(content, Constants.ENCODE);
             cacheData.setUseLocalConfigInfo(true);
@@ -370,7 +370,7 @@ public class ClientWorker implements Closeable {
         int longingTaskCount = (int) Math.ceil(listenerSize / ParamUtil.getPerTaskConfigSize());
         if (longingTaskCount > currentLongingTaskCount) {
             for (int i = (int) currentLongingTaskCount; i < longingTaskCount; i++) {
-                // The task list is no order.So it maybe has issues when changing.
+                // The task list is no order.So it maybe has issues when changing. 第一次的时候会启动该定时任务,之后自己将自身作为任务添加任务队列中执行
                 executorService.execute(new LongPollingRunnable(i));
             }
             currentLongingTaskCount = longingTaskCount;
@@ -435,7 +435,7 @@ public class ClientWorker implements Closeable {
         try {
             // In order to prevent the server from handling the delay of the client's long task,
             // increase the client's read timeout to avoid this problem.
-            
+            // 服务端进行长轮训,并一直保持链接,直到快超时时,如果还是没有变动则返回响应结果为空
             long readTimeoutMs = timeout + (long) Math.round(timeout >> 1);
             HttpRestResult<String> result = agent
                     .httpPost(Constants.CONFIG_CONTROLLER_PATH + "/listener", headers, params, agent.getEncode(),
@@ -518,7 +518,7 @@ public class ClientWorker implements Closeable {
                 return t;
             }
         });
-        
+        // 周期拉取配置变动信息?
         this.executorService = Executors
                 .newScheduledThreadPool(Runtime.getRuntime().availableProcessors(), new ThreadFactory() {
                     @Override
@@ -529,7 +529,7 @@ public class ClientWorker implements Closeable {
                         return t;
                     }
                 });
-        
+        // 周期执行 用于检测配置信息是否发生变化 实际感觉鸡肋的很?
         this.executor.scheduleWithFixedDelay(new Runnable() {
             @Override
             public void run() {
@@ -543,10 +543,10 @@ public class ClientWorker implements Closeable {
     }
     
     private void init(Properties properties) {
-        
+        // 拉取配置长轮训最小超时时间
         timeout = Math.max(ConvertUtils.toInt(properties.getProperty(PropertyKeyConst.CONFIG_LONG_POLL_TIMEOUT),
                 Constants.CONFIG_LONG_POLL_TIMEOUT), Constants.MIN_CONFIG_LONG_POLL_TIMEOUT);
-        
+        // 失败重试间隔
         taskPenaltyTime = ConvertUtils
                 .toInt(properties.getProperty(PropertyKeyConst.CONFIG_RETRY_TIME), Constants.CONFIG_RETRY_TIME);
         

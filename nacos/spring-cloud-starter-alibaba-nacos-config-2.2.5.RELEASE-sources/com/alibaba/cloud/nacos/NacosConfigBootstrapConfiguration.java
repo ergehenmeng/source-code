@@ -35,7 +35,7 @@ public class NacosConfigBootstrapConfiguration {
 	public NacosConfigProperties nacosConfigProperties() {
 		return new NacosConfigProperties();
 	}
-
+	// nacos注册中心管理器, 轮训查询服务端配置是否变更
 	@Bean
 	@ConditionalOnMissingBean
 	public NacosConfigManager nacosConfigManager(

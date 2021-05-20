@@ -38,8 +38,8 @@ public class NacosConfigManager {
 
 	public NacosConfigManager(NacosConfigProperties nacosConfigProperties) {
 		this.nacosConfigProperties = nacosConfigProperties;
-		// Compatible with older code in NacosConfigProperties,It will be deleted in the
-		// future.
+		// Compatible with older code in NacosConfigProperties,It will be deleted in the future.
+		// 目前通过构造方法初始ConfigService对象, 新的方式使用spring cloud方式实现 NacosPropertySourceLocator
 		createConfigService(nacosConfigProperties);
 	}
 

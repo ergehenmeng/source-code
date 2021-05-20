@@ -207,7 +207,7 @@ public class CacheData {
                     cr.setContent(content);
                     configFilterChainManager.doFilter(null, cr);
                     String contentTmp = cr.getContent();
-                    listener.receiveConfigInfo(contentTmp);
+                    listener.receiveConfigInfo(contentTmp);// 触发配置文件变动的监听事件
                     
                     // compare lastContent and content
                     if (listener instanceof AbstractConfigChangeListener) {
@@ -307,7 +307,7 @@ public class CacheData {
     private volatile String md5;
     
     /**
-     * whether use local config.
+     * whether use local config. 是否是使用的本地缓存文件中的内容
      */
     private volatile boolean isUseLocalConfig = false;
     
