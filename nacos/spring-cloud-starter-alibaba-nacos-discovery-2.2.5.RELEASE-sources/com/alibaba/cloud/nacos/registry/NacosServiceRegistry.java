@@ -51,7 +51,7 @@ public class NacosServiceRegistry implements ServiceRegistry<Registration> {
 
 	@Autowired
 	private NacosServiceManager nacosServiceManager;
-
+	// 核心注册服务组件
 	public NacosServiceRegistry(NacosDiscoveryProperties nacosDiscoveryProperties) {
 		this.nacosDiscoveryProperties = nacosDiscoveryProperties;
 	}

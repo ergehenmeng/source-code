@@ -66,8 +66,7 @@ import org.springframework.util.StringUtils;
  * context. The bootstrap context is a SpringApplication created from sources defined in
  * spring.factories as {@link BootstrapConfiguration}, and initialized with external
  * config taken from "bootstrap.properties" (or yml), instead of the normal
- * "application.properties".
- * 上下文加载准备好后会触发该监听器, 主要用于加载spring.factories文件中BootstrapConfiguration注解标示的bean,并额外注册一些
+ * "application.properties".上下文加载准备好后会触发该监听器, 主要用于加载spring.factories文件中BootstrapConfiguration注解标示的bean,并额外注册一些
  * ApplicationContextInitializer, 同时将其添加到SpringApplication中
  * 初始化器: PropertySourceBootstrapConfiguration(加载bootstrap配置信息),  EnvironmentDecryptApplicationInitializer
  * @author Dave Syer
@@ -98,13 +97,13 @@ public class BootstrapApplicationListener
 		if (!environment.getProperty("spring.cloud.bootstrap.enabled", Boolean.class,
 				true)) {
 			return;
-		}
-		// don't listen to events in a bootstrap context 如果classpath中不包含bootstrap文件,则默认不是spring-cloud环境,后续spring-cloud相关环境配置均不加载
+		}// don't listen to events in a bootstrap context
+		// 防止递归启动spring-cloud环境,未启动时放过,启动后再调用该监听器时,发现已是spring-cloud环境,则直接返回
 		if (environment.getPropertySources().contains(BOOTSTRAP_PROPERTY_SOURCE_NAME)) {
 			return;
 		}
 		ConfigurableApplicationContext context = null;
-		String configName = environment
+		String configName = environment // 可以通过spring.cloud.bootstrap.name改变默认文件名, 查找默认配置文件 bootstrap.yaml或bootstrap.properties
 				.resolvePlaceholders("${spring.cloud.bootstrap.name:bootstrap}");
 		for (ApplicationContextInitializer<?> initializer : event.getSpringApplication()
 				.getInitializers()) {
@@ -218,8 +217,8 @@ public class BootstrapApplicationListener
 		context.setId("bootstrap");
 		// Make the bootstrap context a parent of the app context
 		addAncestorInitializer(application, context);
-		// It only has properties in it now that we don't want in the parent so remove
-		// it (and it will be added back later)
+		// It only has properties in it now that we don't want in the parent so remove it (and it will be added back later)
+		//
 		bootstrapProperties.remove(BOOTSTRAP_PROPERTY_SOURCE_NAME);
 		mergeDefaultProperties(environment.getPropertySources(), bootstrapProperties);
 		return context;

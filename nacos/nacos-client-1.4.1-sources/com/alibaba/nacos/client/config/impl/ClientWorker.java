@@ -435,7 +435,7 @@ public class ClientWorker implements Closeable {
         try {
             // In order to prevent the server from handling the delay of the client's long task,
             // increase the client's read timeout to avoid this problem.
-            // 服务端进行长轮训,并一直保持链接,直到快超时时,如果还是没有变动则返回响应结果为空
+            // 该接口请求服务端时, 服务端会尽可能保持该链接并进行长轮训,直到快超时时,如果配置还没改变,则返回响应结果为空,如果改变则直接返回改变的相应信息
             long readTimeoutMs = timeout + (long) Math.round(timeout >> 1);
             HttpRestResult<String> result = agent
                     .httpPost(Constants.CONFIG_CONTROLLER_PATH + "/listener", headers, params, agent.getEncode(),
@@ -592,12 +592,12 @@ public class ClientWorker implements Closeable {
                     }
                 }
                 
-                // check server config
+                // check server config,检测服务端配置中心数据是否更新
                 List<String> changedGroupKeys = checkUpdateDataIds(cacheDatas, inInitializingCacheList);
                 if (!CollectionUtils.isEmpty(changedGroupKeys)) {
                     LOGGER.info("get changedGroupKeys:" + changedGroupKeys);
                 }
-                
+                // 有数据更新
                 for (String groupKey : changedGroupKeys) {
                     String[] key = GroupKey.parseKey(groupKey);
                     String dataId = key[0];
@@ -606,7 +606,7 @@ public class ClientWorker implements Closeable {
                     if (key.length == 3) {
                         tenant = key[2];
                     }
-                    try {
+                    try {// 查询服务端配置中心变更的配置文件信息并更新本地缓存
                         String[] ct = getServerConfig(dataId, group, tenant, 3000L);
                         CacheData cache = cacheMap.get(GroupKey.getKeyTenant(dataId, group, tenant));
                         cache.setContent(ct[0]);

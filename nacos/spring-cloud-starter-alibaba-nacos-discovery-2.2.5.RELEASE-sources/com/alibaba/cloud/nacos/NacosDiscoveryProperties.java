@@ -152,7 +152,7 @@ public class NacosDiscoveryProperties {
 
 	/**
 	 * The ip address your want to register for your service instance, needn't to set it
-	 * if the auto detect ip works well.
+	 * if the auto detect ip works well. 本机ip, 程序默认会动态查询本机ip
 	 */
 	private String ip;
 
@@ -265,7 +265,7 @@ public class NacosDiscoveryProperties {
 
 			}
 		}
-
+		// 部分未设置的属性 尝试从环境变量中获取并设置
 		this.overrideFromEnv(environment);
 		if (nacosServiceManager.isNacosDiscoveryInfoChanged(this)) {
 			applicationEventPublisher
@@ -606,7 +606,7 @@ public class NacosDiscoveryProperties {
 		properties.put(SECRET_KEY, secretKey);
 		properties.put(CLUSTER_NAME, clusterName);
 		properties.put(NAMING_LOAD_CACHE_AT_START, namingLoadCacheAtStart);
-
+		// 将环境变量中 spring.cloud.nacos.discovery节点下的参数设置到properties中
 		enrichNacosDiscoveryProperties(properties);
 		return properties;
 	}

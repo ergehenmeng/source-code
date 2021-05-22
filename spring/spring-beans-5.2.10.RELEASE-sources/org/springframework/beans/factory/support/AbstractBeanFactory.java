@@ -347,16 +347,16 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 					bean = getObjectForBeanInstance(prototypeInstance, name, beanName, mbd);
 				}
 
-				else {
+				else { // 非singleton 非 prototype范围的bean
 					String scopeName = mbd.getScope();
 					if (!StringUtils.hasLength(scopeName)) {
 						throw new IllegalStateException("No scope name defined for bean ´" + beanName + "'");
 					}
-					Scope scope = this.scopes.get(scopeName);
+					Scope scope = this.scopes.get(scopeName);// 根据指定的实现类型判断是否需要缓存或重新生成
 					if (scope == null) {
 						throw new IllegalStateException("No Scope registered for scope name '" + scopeName + "'");
 					}
-					try {
+					try {// refresh类型时,每次调用该bean的方法或属性时自动生成新的对象类似于prototype类型
 						Object scopedInstance = scope.get(beanName, () -> {
 							beforePrototypeCreation(beanName);
 							try {

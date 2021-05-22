@@ -29,8 +29,8 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 /**
- * @author xiaojing
- * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
+ * @author xiaojing <a href="mailto:mercyblitz@gmail.com">Mercy</a>
+ * 该接口实现了ApplicationListener接口,在tomcat容器启动后会触发事件,从而启动服务注册功能
  */
 public class NacosAutoServiceRegistration
 		extends AbstractAutoServiceRegistration<Registration> {

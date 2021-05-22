@@ -141,14 +141,14 @@ public class NamingProxy implements Closeable {
                 return t;
             }
         });
-        
+        // 先尝试获取注册中心的列表(针对集群模式)
         this.executorService.scheduleWithFixedDelay(new Runnable() {
             @Override
             public void run() {
                 refreshSrvIfNeed();
             }
         }, 0, vipSrvRefInterMillis, TimeUnit.MILLISECONDS);
-        
+        // 定时任务登陆注册中心,防止session过期
         this.executorService.scheduleWithFixedDelay(new Runnable() {
             @Override
             public void run() {

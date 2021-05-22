@@ -205,10 +205,10 @@ public class NacosNamingService implements NamingService {
     public void registerInstance(String serviceName, String groupName, Instance instance) throws NacosException {
         NamingUtils.checkInstanceIsLegal(instance);
         String groupedServiceName = NamingUtils.getGroupedName(serviceName, groupName);
-        if (instance.isEphemeral()) {
+        if (instance.isEphemeral()) { // 添加心跳到注册中心上,这样注册中心就能实时检测服务提供者是否可用
             BeatInfo beatInfo = beatReactor.buildBeatInfo(groupedServiceName, instance);
             beatReactor.addBeatInfo(groupedServiceName, beatInfo);
-        }
+        } // 将本机服务注册到nacos上
         serverProxy.registerService(groupedServiceName, groupName, instance);
     }
     
