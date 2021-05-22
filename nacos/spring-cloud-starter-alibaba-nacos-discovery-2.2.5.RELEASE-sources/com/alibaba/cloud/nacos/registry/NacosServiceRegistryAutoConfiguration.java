@@ -33,10 +33,10 @@ import org.springframework.cloud.client.serviceregistry.AutoServiceRegistrationP
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 /**
- * @author xiaojing
- * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
+ * @author xiaojing @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
+ * NacosRegistration,NacosAutoServiceRegistration是否注册为bean是由AutoServiceRegistrationProperties是否存在来决定的,
+ * 而AutoServiceRegistrationProperties是否加载则是由@EnableDiscoveryClient来决定的,因此添加EnableDiscoveryClient注解就是自动开启服务注册与发现
  */
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties

@@ -155,7 +155,7 @@ public class NacosServiceRegistry implements ServiceRegistry<Registration> {
 	public Object getStatus(Registration registration) {
 
 		String serviceName = registration.getServiceId();
-		try {
+		try {// 存在多个一样的服务服务注册到nacos上,因此根据服务名可能会查询到多个服务实例
 			List<Instance> instances = namingService().getAllInstances(serviceName);
 			for (Instance instance : instances) {
 				if (instance.getIp().equalsIgnoreCase(nacosDiscoveryProperties.getIp())
