@@ -119,7 +119,7 @@ public abstract class NamedContextFactory<C extends NamedContextFactory.Specific
 					context.register(configuration);
 				}
 			}
-		}
+		}// 主要加载FeignClientsConfiguration相关配置信息
 		context.register(PropertyPlaceholderAutoConfiguration.class,
 				this.defaultConfigType);
 		context.getEnvironment().getPropertySources().addFirst(new MapPropertySource(
@@ -127,7 +127,7 @@ public abstract class NamedContextFactory<C extends NamedContextFactory.Specific
 				Collections.<String, Object>singletonMap(this.propertyName, name)));
 		if (this.parent != null) {
 			// Uses Environment from parent as well as beans
-			context.setParent(this.parent);
+			context.setParent(this.parent);// 设置父上下文,这样查找FeignClient配置相关的Bean可以直接获取到
 			// jdk11 issue
 			// https://github.com/spring-cloud/spring-cloud-netflix/issues/3101
 			context.setClassLoader(this.parent.getClassLoader());
@@ -178,7 +178,7 @@ public abstract class NamedContextFactory<C extends NamedContextFactory.Specific
 		}
 		return null;
 	}
-
+	// 在项目中定义配置Bean默认是由context.getParent()上下文进行管理,而此处查询Bean如果当前上下文没有则会查询父容器上下文
 	public <T> Map<String, T> getInstances(String name, Class<T> type) {
 		AnnotationConfigApplicationContext context = getContext(name);
 		if (BeanFactoryUtils.beanNamesForTypeIncludingAncestors(context,

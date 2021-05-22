@@ -114,7 +114,7 @@ public class FeignClientsConfiguration {
 		}
 		return encoder;
 	}
-
+	// 用于解析@FeignClient上的参数注解,例如 @RequestParam,@PathVariable, @RequestHeader
 	@Bean
 	@ConditionalOnMissingBean
 	public Contract feignContract(ConversionService feignConversionService) {

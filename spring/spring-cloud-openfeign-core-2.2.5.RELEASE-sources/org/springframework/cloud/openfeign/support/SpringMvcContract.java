@@ -171,7 +171,7 @@ public class SpringMvcContract extends Contract.BaseContract
 
 	@Override
 	protected void processAnnotationOnClass(MethodMetadata data, Class<?> clz) {
-		if (clz.getInterfaces().length == 0) {
+		if (clz.getInterfaces().length == 0) {// 解析接口上@RequestMapping,如果有的话则请求url=类RequestMapping+方法RequestMapping
 			RequestMapping classAnnotation = findMergedAnnotation(clz,
 					RequestMapping.class);
 			if (classAnnotation != null) {

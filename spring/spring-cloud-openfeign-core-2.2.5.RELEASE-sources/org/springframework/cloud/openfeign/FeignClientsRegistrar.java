@@ -232,16 +232,16 @@ class FeignClientsRegistrar
 		definition.addPropertyValue("url", getUrl(attributes));
 		definition.addPropertyValue("path", getPath(attributes));
 		String name = getName(attributes);
-		definition.addPropertyValue("name", name);
-		String contextId = getContextId(attributes);
+		definition.addPropertyValue("name", name); // 服务名
+		String contextId = getContextId(attributes);// 服务名
 		definition.addPropertyValue("contextId", contextId);
-		definition.addPropertyValue("type", className);
+		definition.addPropertyValue("type", className); // 接口类型
 		definition.addPropertyValue("decode404", attributes.get("decode404"));
 		definition.addPropertyValue("fallback", attributes.get("fallback"));
 		definition.addPropertyValue("fallbackFactory", attributes.get("fallbackFactory"));
 		definition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
 
-		String alias = contextId + "FeignClient";
+		String alias = contextId + "FeignClient"; // 别名
 		AbstractBeanDefinition beanDefinition = definition.getBeanDefinition();
 		beanDefinition.setAttribute(FactoryBean.OBJECT_TYPE_ATTRIBUTE, className);
 

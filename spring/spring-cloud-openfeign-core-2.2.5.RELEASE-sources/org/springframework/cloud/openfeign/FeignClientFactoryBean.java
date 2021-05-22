@@ -63,9 +63,9 @@ class FeignClientFactoryBean
 	 * lifecycle race condition.
 	 ***********************************/
 
-	private Class<?> type;
+	private Class<?> type; // @FeignClient接口类型
 
-	private String name;
+	private String name; // 服务名
 
 	private String url;
 
@@ -101,7 +101,7 @@ class FeignClientFactoryBean
 		Feign.Builder builder = get(context, Feign.Builder.class)
 				// required values
 				.logger(logger)
-				.encoder(get(context, Encoder.class))
+				.encoder(get(context, Encoder.class)) // 设置编解码方式
 				.decoder(get(context, Decoder.class))
 				.contract(get(context, Contract.class));
 		// @formatter:on
@@ -120,14 +120,14 @@ class FeignClientFactoryBean
 		setInheritParentContext(feignClientConfigurer.inheritParentConfiguration());
 
 		if (properties != null && inheritParentContext) {
-			if (properties.isDefaultToProperties()) {
+			if (properties.isDefaultToProperties()) {// 以properties文件中配置信息为主(Configuration中默认优先级会低于properties)
 				configureUsingConfiguration(context, builder);
 				configureUsingProperties(
 						properties.getConfig().get(properties.getDefaultConfig()),
 						builder);
 				configureUsingProperties(properties.getConfig().get(contextId), builder);
 			}
-			else {
+			else {// 以Configuration文件中配置信息为主(Configuration中默认优先级高于properties)
 				configureUsingProperties(
 						properties.getConfig().get(properties.getDefaultConfig()),
 						builder);
@@ -135,7 +135,7 @@ class FeignClientFactoryBean
 				configureUsingConfiguration(context, builder);
 			}
 		}
-		else {
+		else {// 直接以Configuration为主
 			configureUsingConfiguration(context, builder);
 		}
 	}
