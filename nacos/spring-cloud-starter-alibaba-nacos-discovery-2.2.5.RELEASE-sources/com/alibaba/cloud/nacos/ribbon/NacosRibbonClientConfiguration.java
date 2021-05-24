@@ -28,7 +28,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * integrated Ribbon by default.
- *
+ * 用于发现注册中心可用服务列表
  * @author xiaojing
  * @author liujunjie
  */

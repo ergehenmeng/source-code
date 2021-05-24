@@ -88,7 +88,7 @@ final class SynchronousMethodHandler implements MethodHandler {
       try {
         return executeAndDecode(template, options);
       } catch (RetryableException e) {
-        try {
+        try {// 重试上限抛异常,否则继续重试
           retryer.continueOrPropagate(e);
         } catch (RetryableException th) {
           Throwable cause = th.getCause();

@@ -47,7 +47,7 @@ import org.springframework.util.StreamUtils;
 
 /**
  * A {@link FeignLoadBalancer} that leverages Spring Retry to retry failed requests.
- *
+ * 远程访问负载均衡, 获取注册中心的服务列表,按规则取其中之一进行接口访问
  * @author Ryan Baxter
  * @author Gang Li
  */

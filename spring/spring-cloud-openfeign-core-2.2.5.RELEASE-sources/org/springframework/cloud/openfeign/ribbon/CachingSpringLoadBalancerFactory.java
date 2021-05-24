@@ -58,9 +58,9 @@ public class CachingSpringLoadBalancerFactory {
 			return client;
 		}
 		IClientConfig config = this.factory.getClientConfig(clientName);
-		ILoadBalancer lb = this.factory.getLoadBalancer(clientName);
+		ILoadBalancer lb = this.factory.getLoadBalancer(clientName); // 默认实现ZoneAwareLoadBalancer
 		ServerIntrospector serverIntrospector = this.factory.getInstance(clientName,
-				ServerIntrospector.class);
+				ServerIntrospector.class);// NacosServerIntrospector
 		client = this.loadBalancedRetryFactory != null
 				? new RetryableFeignLoadBalancer(lb, config, serverIntrospector,
 						this.loadBalancedRetryFactory)

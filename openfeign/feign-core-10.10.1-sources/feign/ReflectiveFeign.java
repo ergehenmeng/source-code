@@ -27,7 +27,7 @@ import feign.codec.*;
 import feign.template.UriUtils;
 
 public class ReflectiveFeign extends Feign {
-
+  // 主要解析方法参数及url等信息
   private final ParseHandlersByName targetToHandlersByName;
   private final InvocationHandlerFactory factory;
   private final QueryMapEncoder queryMapEncoder;
@@ -41,7 +41,7 @@ public class ReflectiveFeign extends Feign {
 
   /**
    * creates an api binding to the {@code target}. As this invokes reflection, care should be taken
-   * to cache the result.
+   * to cache the result. 生成方法的代理对象
    */
   @SuppressWarnings("unchecked")
   @Override
@@ -53,7 +53,7 @@ public class ReflectiveFeign extends Feign {
     for (Method method : target.type().getMethods()) {
       if (method.getDeclaringClass() == Object.class) {
         continue;
-      } else if (Util.isDefault(method)) {
+      } else if (Util.isDefault(method)) {// 接口通过default关键字定义的方法, 不走远程调用而是直接调用???
         DefaultMethodHandler handler = new DefaultMethodHandler(method);
         defaultMethodHandlers.add(handler);
         methodToHandler.put(method, handler);
@@ -96,7 +96,7 @@ public class ReflectiveFeign extends Feign {
       } else if ("toString".equals(method.getName())) {
         return toString();
       }
-
+      // 接口调用最终会通过该方法发起远程调用并返回结果, 接口默认实现SynchronousMethodHandler
       return dispatch.get(method).invoke(args);
     }
 

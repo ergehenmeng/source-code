@@ -79,7 +79,7 @@ public class LoadBalancerFeignClient implements Client {
 					this.delegate, request, uriWithoutHost);
 
 			IClientConfig requestConfig = getClientConfig(options, clientName);
-			return lbClient(clientName)
+			return lbClient(clientName) // 创建可以负载均衡的client对象
 					.executeWithLoadBalancer(ribbonRequest, requestConfig).toResponse();
 		}
 		catch (ClientException e) {

@@ -30,7 +30,7 @@ public interface Contract {
 
   /**
    * Called to parse the methods in the class that are linked to HTTP requests.
-   *
+   * 解析接口上及方法上的注解等信息生成方法元数据
    * @param targetType {@link feign.Target#type() type} of the Feign interface.
    */
   List<MethodMetadata> parseAndValidateMetadata(Class<?> targetType);

@@ -294,7 +294,7 @@ class FeignClientFactoryBean
 
 	protected <T> T loadBalance(Feign.Builder builder, FeignContext context,
 			HardCodedTarget<T> target) {
-		Client client = getOptional(context, Client.class);
+		Client client = getOptional(context, Client.class);// 默认实现是LoadBalancerFeignClient(DefaultFeignLoadBalancedConfiguration声明)
 		if (client != null) {
 			builder.client(client);
 			Targeter targeter = get(context, Targeter.class);

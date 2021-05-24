@@ -135,7 +135,7 @@ public class FeignClientsConfiguration {
 	public Retryer feignRetryer() {
 		return Retryer.NEVER_RETRY;
 	}
-
+	// 默认方式, 不支持熔断操作, 如果需要支持熔断则feign.hystrix.enabled=true
 	@Bean
 	@Scope("prototype")
 	@ConditionalOnMissingBean

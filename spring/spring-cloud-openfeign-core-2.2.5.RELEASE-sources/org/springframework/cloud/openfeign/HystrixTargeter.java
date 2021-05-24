@@ -35,7 +35,7 @@ class HystrixTargeter implements Targeter {
 	public <T> T target(FeignClientFactoryBean factory, Feign.Builder feign,
 			FeignContext context, Target.HardCodedTarget<T> target) {
 		if (!(feign instanceof feign.hystrix.HystrixFeign.Builder)) {
-			return feign.target(target);
+			return feign.target(target);// 不开启feign.hystrix.enabled=true,则默认使用该创建方式
 		}
 		feign.hystrix.HystrixFeign.Builder builder = (feign.hystrix.HystrixFeign.Builder) feign;
 		String name = StringUtils.isEmpty(factory.getContextId()) ? factory.getName()
@@ -45,7 +45,7 @@ class HystrixTargeter implements Targeter {
 			builder.setterFactory(setterFactory);
 		}
 		Class<?> fallback = factory.getFallback();
-		if (fallback != void.class) {
+		if (fallback != void.class) { // 查找熔断方法,如果方法未声明为Bean则会抛异常
 			return targetWithFallback(name, context, target, builder, fallback);
 		}
 		Class<?> fallbackFactory = factory.getFallbackFactory();

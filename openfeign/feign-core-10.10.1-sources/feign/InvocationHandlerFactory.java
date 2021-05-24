@@ -21,7 +21,7 @@ import java.util.Map;
  * Controls reflective method dispatch.
  */
 public interface InvocationHandlerFactory {
-
+  // HardCodedTarget 包含请求uri,服务名,接口类型
   InvocationHandler create(Target target, Map<Method, MethodHandler> dispatch);
 
   /**
