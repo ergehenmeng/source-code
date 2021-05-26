@@ -59,7 +59,7 @@ public class HttpHandlerAutoConfiguration {
 		public AnnotationConfig(ApplicationContext applicationContext) {
 			this.applicationContext = applicationContext;
 		}
-
+		// ReactiveWebServerApplicationContext 创建netty容器环境
 		@Bean
 		public HttpHandler httpHandler(ObjectProvider<WebFluxProperties> propsProvider) {
 			HttpHandler httpHandler = WebHttpHandlerBuilder.applicationContext(this.applicationContext).build();

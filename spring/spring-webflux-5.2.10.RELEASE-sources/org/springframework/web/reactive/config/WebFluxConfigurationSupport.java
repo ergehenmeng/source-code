@@ -120,7 +120,7 @@ public class WebFluxConfigurationSupport implements ApplicationContextAware {
 	public WebExceptionHandler responseStatusExceptionHandler() {
 		return new WebFluxResponseStatusExceptionHandler();
 	}
-
+	// 处理webflux方式的@RequestMapping等
 	@Bean
 	public RequestMappingHandlerMapping requestMappingHandlerMapping(
 			@Qualifier("webFluxContentTypeResolver") RequestedContentTypeResolver contentTypeResolver) {
@@ -204,7 +204,7 @@ public class WebFluxConfigurationSupport implements ApplicationContextAware {
 	 */
 	public void configurePathMatching(PathMatchConfigurer configurer) {
 	}
-
+	// 路由映射的Mapping ???
 	@Bean
 	public RouterFunctionMapping routerFunctionMapping(ServerCodecConfigurer serverCodecConfigurer) {
 		RouterFunctionMapping mapping = createRouterFunctionMapping();
@@ -236,7 +236,7 @@ public class WebFluxConfigurationSupport implements ApplicationContextAware {
 		ResourceHandlerRegistry registry = new ResourceHandlerRegistry(resourceLoader);
 		registry.setResourceUrlProvider(resourceUrlProvider);
 		addResourceHandlers(registry);
-
+		// 主要用于用户自定义的资源映射 默认由SimpleUrlHandlerMapping统一处理
 		AbstractHandlerMapping handlerMapping = registry.getHandlerMapping();
 		if (handlerMapping != null) {
 			PathMatchConfigurer configurer = getPathMatchConfigurer();
@@ -418,7 +418,7 @@ public class WebFluxConfigurationSupport implements ApplicationContextAware {
 	protected MessageCodesResolver getMessageCodesResolver() {
 		return null;
 	}
-
+	// handlerAdapter
 	@Bean
 	public HandlerFunctionAdapter handlerFunctionAdapter() {
 		return new HandlerFunctionAdapter();

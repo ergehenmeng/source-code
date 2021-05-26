@@ -64,7 +64,7 @@ abstract class ReactiveWebServerFactoryConfiguration {
 		ReactorResourceFactory reactorServerResourceFactory() {
 			return new ReactorResourceFactory();
 		}
-
+		// 添加自定义netty服务器配置(如果有的话)
 		@Bean
 		NettyReactiveWebServerFactory nettyReactiveWebServerFactory(ReactorResourceFactory resourceFactory,
 				ObjectProvider<NettyRouteProvider> routes, ObjectProvider<NettyServerCustomizer> serverCustomizers) {

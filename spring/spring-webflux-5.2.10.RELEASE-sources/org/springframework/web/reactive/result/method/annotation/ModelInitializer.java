@@ -75,10 +75,10 @@ class ModelInitializer {
 	@SuppressWarnings("Convert2MethodRef")
 	public Mono<Void> initModel(HandlerMethod handlerMethod, InitBinderBindingContext bindingContext,
 			ServerWebExchange exchange) {
-
+		// @ModelAttribute标注的方法
 		List<InvocableHandlerMethod> modelMethods =
 				this.methodResolver.getModelAttributeMethods(handlerMethod);
-
+		// @SessionAttribute标注的方法
 		SessionAttributesHandler sessionAttributesHandler =
 				this.methodResolver.getSessionAttributesHandler(handlerMethod);
 

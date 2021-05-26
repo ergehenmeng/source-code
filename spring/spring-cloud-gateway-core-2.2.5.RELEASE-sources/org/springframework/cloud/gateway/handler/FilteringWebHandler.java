@@ -73,7 +73,7 @@ public class FilteringWebHandler implements WebHandler {
 
 	@Override
 	public Mono<Void> handle(ServerWebExchange exchange) {
-		Route route = exchange.getRequiredAttribute(GATEWAY_ROUTE_ATTR);
+		Route route = exchange.getRequiredAttribute(GATEWAY_ROUTE_ATTR);// 用户指定节点定义的过滤器
 		List<GatewayFilter> gatewayFilters = route.getFilters();
 
 		List<GatewayFilter> combined = new ArrayList<>(this.globalFilters);

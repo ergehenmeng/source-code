@@ -184,14 +184,14 @@ public class GatewayAutoConfiguration {
 			ConfigurableApplicationContext context) {
 		return new RouteLocatorBuilder(context);
 	}
-
+	// 路由规则配置(配置文件中定义)
 	@Bean
 	@ConditionalOnMissingBean
 	public PropertiesRouteDefinitionLocator propertiesRouteDefinitionLocator(
 			GatewayProperties properties) {
 		return new PropertiesRouteDefinitionLocator(properties);
 	}
-
+	// 路由规则配置(内存中定义)
 	@Bean
 	@ConditionalOnMissingBean(RouteDefinitionRepository.class)
 	public InMemoryRouteDefinitionRepository inMemoryRouteDefinitionRepository() {
@@ -237,7 +237,7 @@ public class GatewayAutoConfiguration {
 			ApplicationEventPublisher publisher) {
 		return new RouteRefreshListener(publisher);
 	}
-
+	// 处理网关的处理器(网关的过滤器), 系统会注册一部分过滤器从来实现部分功能
 	@Bean
 	public FilteringWebHandler filteringWebHandler(List<GlobalFilter> globalFilters) {
 		return new FilteringWebHandler(globalFilters);
@@ -247,7 +247,7 @@ public class GatewayAutoConfiguration {
 	public GlobalCorsProperties globalCorsProperties() {
 		return new GlobalCorsProperties();
 	}
-	// 添加HandlerMapping
+	// 添加HandlerMapping 主要处理网关的请求,路由规则等, 优先级比RequestMappingHandlerMapping低
 	@Bean
 	public RoutePredicateHandlerMapping routePredicateHandlerMapping(
 			FilteringWebHandler webHandler, RouteLocator routeLocator,

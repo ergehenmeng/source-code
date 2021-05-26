@@ -23,7 +23,7 @@ import org.springframework.web.server.ServerWebExchange;
 /**
  * Contract for interception-style, chained processing of Web requests that may be used to
  * implement cross-cutting, application-agnostic requirements such as security, timeouts,
- * and others.
+ * and others. webflux作为网关时,请求经过RoutePredicateHandlerMapping时,会先经过GlobalFilter,再经过具体的handler处理
  *
  * @author Rossen Stoyanchev
  * @since 5.0

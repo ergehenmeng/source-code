@@ -58,7 +58,7 @@ import org.springframework.web.server.adapter.WebHttpHandlerBuilder;
  * <p>A {@code DispatcherHandler} bean declaration is included in
  * {@link org.springframework.web.reactive.config.EnableWebFlux @EnableWebFlux}
  * configuration.
- *
+ * 类似于DispatchServlet 核心处理方法handler
  * @author Rossen Stoyanchev
  * @author Sebastien Deleuze
  * @author Juergen Hoeller

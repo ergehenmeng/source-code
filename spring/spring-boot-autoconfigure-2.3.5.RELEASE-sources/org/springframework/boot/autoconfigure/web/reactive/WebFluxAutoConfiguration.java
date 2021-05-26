@@ -72,7 +72,7 @@ import org.springframework.web.reactive.result.view.ViewResolver;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for {@link EnableWebFlux WebFlux}.
- *
+ * webflux自动装配必要的基础配置信息
  * @author Brian Clozel
  * @author Rob Winch
  * @author Stephane Nicoll
@@ -245,7 +245,7 @@ public class WebFluxAutoConfiguration {
 			}
 			return ValidatorAdapter.get(getApplicationContext(), getValidator());
 		}
-
+		// 添加HandlerAdapter
 		@Override
 		protected RequestMappingHandlerAdapter createRequestMappingHandlerAdapter() {
 			if (this.webFluxRegistrations != null
@@ -254,7 +254,7 @@ public class WebFluxAutoConfiguration {
 			}
 			return super.createRequestMappingHandlerAdapter();
 		}
-
+		// 添加HandlerMapping
 		@Override
 		protected RequestMappingHandlerMapping createRequestMappingHandlerMapping() {
 			if (this.webFluxRegistrations != null

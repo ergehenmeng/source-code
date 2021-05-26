@@ -66,7 +66,7 @@ public class DefaultWebFilterChain implements WebFilterChain {
 		Assert.notNull(handler, "WebHandler is required");
 		this.allFilters = Collections.unmodifiableList(filters);
 		this.handler = handler;
-		DefaultWebFilterChain chain = initChain(filters, handler);
+		DefaultWebFilterChain chain = initChain(filters, handler); // 通过装饰将filter依次包装一个DefaultWebFilterChain
 		this.currentFilter = chain.currentFilter;
 		this.chain = chain.chain;
 	}
@@ -119,7 +119,7 @@ public class DefaultWebFilterChain implements WebFilterChain {
 		return Mono.defer(() ->
 				this.currentFilter != null && this.chain != null ?
 						invokeFilter(this.currentFilter, this.chain, exchange) :
-						this.handler.handle(exchange));
+						this.handler.handle(exchange));// 如果是最后一个过滤器则currentFilter为空
 	}
 
 	private Mono<Void> invokeFilter(WebFilter current, DefaultWebFilterChain chain, ServerWebExchange exchange) {

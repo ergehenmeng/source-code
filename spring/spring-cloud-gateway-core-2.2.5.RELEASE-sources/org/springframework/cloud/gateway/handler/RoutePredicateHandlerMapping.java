@@ -92,7 +92,7 @@ public class RoutePredicateHandlerMapping extends AbstractHandlerMapping {
 						logger.debug(
 								"Mapping [" + getExchangeDesc(exchange) + "] to " + r);
 					}
-
+					// 将路由信息放入到附加信息中,以便于后面webHandler可以做特殊业务处理
 					exchange.getAttributes().put(GATEWAY_ROUTE_ATTR, r);
 					return Mono.just(webHandler);
 				}).switchIfEmpty(Mono.empty().then(Mono.fromRunnable(() -> {
