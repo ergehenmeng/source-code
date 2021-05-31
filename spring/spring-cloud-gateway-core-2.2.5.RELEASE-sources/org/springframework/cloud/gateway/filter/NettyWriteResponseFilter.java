@@ -68,7 +68,7 @@ public class NettyWriteResponseFilter implements GlobalFilter, Ordered {
 				.doOnError(throwable -> cleanup(exchange))
 				.then(Mono.defer(() -> {
 					Connection connection = exchange.getAttribute(CLIENT_RESPONSE_CONN_ATTR);
-
+					// 将netty远程请求返回的数据读取处理写入response???
 					if (connection == null) {
 						return Mono.empty();
 					}

@@ -33,7 +33,7 @@ import org.springframework.web.server.ServerWebExchange;
 import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.CACHED_REQUEST_BODY_ATTR;
 import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.CACHED_SERVER_HTTP_REQUEST_DECORATOR_ATTR;
 import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR;
-
+// 缓存body数据,防止InputStream流读取一次后再次读取会抛异常?????
 public class AdaptCachedBodyGlobalFilter
 		implements GlobalFilter, Ordered, ApplicationListener<EnableBodyCachingEvent> {
 

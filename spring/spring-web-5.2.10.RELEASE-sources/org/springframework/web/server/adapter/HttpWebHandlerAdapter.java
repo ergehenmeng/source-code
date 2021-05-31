@@ -47,7 +47,7 @@ import org.springframework.web.server.session.WebSessionManager;
 
 /**
  * Default adapter of {@link WebHandler} to the {@link HttpHandler} contract.
- *
+ * http请求核心处理类
  * <p>By default creates and configures a {@link DefaultServerWebExchange} and
  * then invokes the target {@code WebHandler}.
  *

@@ -123,7 +123,7 @@ public class ReactiveLoadBalancerClientFilter implements GlobalFilter, Ordered {
 		ReactorLoadBalancer<ServiceInstance> loadBalancer = this.clientFactory
 				.getInstance(uri.getHost(), ReactorLoadBalancer.class,
 						ServiceInstance.class);
-		if (loadBalancer == null) {
+		if (loadBalancer == null) {//查找可用负载均衡器
 			throw new NotFoundException("No loadbalancer available for " + uri.getHost());
 		}
 		return loadBalancer.choose(createRequest());

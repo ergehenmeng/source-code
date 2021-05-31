@@ -27,7 +27,7 @@ import org.springframework.context.annotation.Primary;
 
 /**
  * Auto-configuration for composite discovery client.
- *
+ * 加载可以用DiscoveryClient 一个服务可能同时注册到nacos, eureka上,因此会有两个客户端
  * @author Biju Kunjummen
  */
 

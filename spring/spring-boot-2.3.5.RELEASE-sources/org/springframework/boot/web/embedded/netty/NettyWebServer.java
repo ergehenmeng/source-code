@@ -141,7 +141,7 @@ public class NettyWebServer implements WebServer {
 		}
 		if (this.lifecycleTimeout != null) {
 			return server.bindNow(this.lifecycleTimeout);
-		}
+		}// 启动netty服务,同时注册各类handler 通过configure进行配置handler的
 		return server.bindNow();
 	}
 

@@ -24,7 +24,7 @@ import org.springframework.core.Ordered;
 /**
  * Represents read operations commonly available to discovery services such as Netflix
  * Eureka or consul.io.
- *
+ * 主要是获取注册中心可用的服务
  * @author Spencer Gibb
  * @author Olga Maciaszek-Sharma
  */

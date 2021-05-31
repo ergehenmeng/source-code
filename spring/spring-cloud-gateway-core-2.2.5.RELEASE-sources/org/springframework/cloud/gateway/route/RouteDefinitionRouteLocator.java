@@ -172,7 +172,7 @@ public class RouteDefinitionRouteLocator
 		return Route.async(routeDefinition).asyncPredicate(predicate)
 				.replaceFilters(gatewayFilters).build();
 	}
-
+	// 加载配置文件节点中定义的过滤器
 	@SuppressWarnings("unchecked")
 	List<GatewayFilter> loadGatewayFilters(String id,
 			List<FilterDefinition> filterDefinitions) {
@@ -190,7 +190,7 @@ public class RouteDefinitionRouteLocator
 				logger.debug("RouteDefinition " + id + " applying filter "
 						+ definition.getArgs() + " to " + definition.getName());
 			}
-
+			// 根据配置生成指定的Config
 			// @formatter:off
 			Object configuration = this.configurationService.with(factory)
 					.name(definition.getName())

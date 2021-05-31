@@ -27,7 +27,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 /**
  * @deprecated in favour of {@link ReactorLoadBalancerClientAutoConfiguration}
- * @author Spencer Gibb
+ * @author Spencer Gibb 反应式负载均衡基础配置
  * @author Olga Maciaszek-Sharma
  */
 @Configuration(proxyBeanMethods = false)
