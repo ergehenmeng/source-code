@@ -151,7 +151,7 @@ public class NettyRoutingFilter implements GlobalFilter, Ordered {
 					// Put client response as ServerWebExchange attribute and write
 					// response later NettyWriteResponseFilter
 					exchange.getAttributes().put(CLIENT_RESPONSE_ATTR, res);
-					exchange.getAttributes().put(CLIENT_RESPONSE_CONN_ATTR, connection);
+					exchange.getAttributes().put(CLIENT_RESPONSE_CONN_ATTR, connection); // 将响应信息保存,方便后面读取响应信息,写入response
 
 					ServerHttpResponse response = exchange.getResponse();
 					// put headers and status so filters can modify the response

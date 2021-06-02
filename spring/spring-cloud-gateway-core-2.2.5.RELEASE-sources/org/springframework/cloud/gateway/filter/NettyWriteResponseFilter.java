@@ -66,7 +66,7 @@ public class NettyWriteResponseFilter implements GlobalFilter, Ordered {
 		// @formatter:off
 		return chain.filter(exchange)
 				.doOnError(throwable -> cleanup(exchange))
-				.then(Mono.defer(() -> {
+				.then(Mono.defer(() -> { // 过滤器执行完之后获取到远程请求的响应信息,此处是将响应结果写入response中
 					Connection connection = exchange.getAttribute(CLIENT_RESPONSE_CONN_ATTR);
 					// 将netty远程请求返回的数据读取处理写入response???
 					if (connection == null) {

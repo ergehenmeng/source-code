@@ -72,7 +72,7 @@ public class ReactiveLoadBalancerClientFilter implements GlobalFilter, Ordered {
 	@Override
 	@SuppressWarnings("Duplicates")
 	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-		URI url = exchange.getAttribute(GATEWAY_REQUEST_URL_ATTR);
+		URI url = exchange.getAttribute(GATEWAY_REQUEST_URL_ATTR); // lb://spring-cloud-producer/sendMsg
 		String schemePrefix = exchange.getAttribute(GATEWAY_SCHEME_PREFIX_ATTR);
 		if (url == null
 				|| (!"lb".equals(url.getScheme()) && !"lb".equals(schemePrefix))) {
@@ -87,7 +87,7 @@ public class ReactiveLoadBalancerClientFilter implements GlobalFilter, Ordered {
 		}
 
 		return choose(exchange).doOnNext(response -> {
-
+			// 未查找到指定的服务 404错误
 			if (!response.hasServer()) {
 				throw NotFoundException.create(properties.isUse404(),
 						"Unable to find instance for " + url.getHost());

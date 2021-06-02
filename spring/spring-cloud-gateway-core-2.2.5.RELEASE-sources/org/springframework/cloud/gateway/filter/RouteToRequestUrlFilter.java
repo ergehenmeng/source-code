@@ -85,7 +85,7 @@ public class RouteToRequestUrlFilter implements GlobalFilter, Ordered {
 			// underscore)
 			throw new IllegalStateException("Invalid host: " + routeUri.toString());
 		}
-		// 根据前端访问的url和路由规则的路径生成最终访问的路径(不包含具体路径)
+		// 根据前端访问的url和路由规则的路径生成最终访问的路径(不包含具体路径) lb://spring-cloud-producer/sendMsg
 		URI mergedUrl = UriComponentsBuilder.fromUri(uri)
 				// .uri(routeUri)
 				.scheme(routeUri.getScheme()).host(routeUri.getHost())

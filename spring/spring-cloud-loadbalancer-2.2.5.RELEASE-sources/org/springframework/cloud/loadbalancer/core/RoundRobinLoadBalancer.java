@@ -124,7 +124,7 @@ public class RoundRobinLoadBalancer implements ReactorServiceInstanceLoadBalance
 
 	private Response<ServiceInstance> getInstanceResponse(
 			List<ServiceInstance> instances) {
-		if (instances.isEmpty()) {
+		if (instances.isEmpty()) { // 未找到相应的服务 404
 			log.warn("No servers available for service: " + this.serviceId);
 			return new EmptyResponse();
 		}

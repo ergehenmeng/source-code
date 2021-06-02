@@ -53,13 +53,13 @@ public interface HttpHeadersFilter {
 	 * @return filtered Http Headers
 	 */
 	HttpHeaders filter(HttpHeaders input, ServerWebExchange exchange);
-
+	// 处理的是RequestHeader还是ResponseHeader
 	default boolean supports(Type type) {
 		return type.equals(Type.REQUEST);
 	}
 
 	enum Type {
-
+		
 		REQUEST, RESPONSE
 
 	}

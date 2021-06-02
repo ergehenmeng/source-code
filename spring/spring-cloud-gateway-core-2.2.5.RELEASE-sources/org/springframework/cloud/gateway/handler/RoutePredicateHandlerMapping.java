@@ -39,7 +39,7 @@ import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.G
  * @author Spencer Gibb
  */
 public class RoutePredicateHandlerMapping extends AbstractHandlerMapping {
-
+	// gateway过滤器处理器(内部实现了负载均衡,远程请求,重定向等)
 	private final FilteringWebHandler webHandler;
 
 	private final RouteLocator routeLocator;
@@ -131,7 +131,7 @@ public class RoutePredicateHandlerMapping extends AbstractHandlerMapping {
 				.concatMap(route -> Mono.just(route).filterWhen(r -> {
 					// add the current route we are testing
 					exchange.getAttributes().put(GATEWAY_PREDICATE_ROUTE_ATTR, r.getId());
-					return r.getPredicate().apply(exchange);
+					return r.getPredicate().apply(exchange); // 判断请求是否能走该节点
 				})
 						// instead of immediately stopping main flux due to error, log and
 						// swallow it

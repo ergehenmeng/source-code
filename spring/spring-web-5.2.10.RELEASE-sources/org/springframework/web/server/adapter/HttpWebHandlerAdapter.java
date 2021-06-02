@@ -231,7 +231,7 @@ public class HttpWebHandlerAdapter extends WebHandlerDecorator implements HttpHa
 		LogFormatUtils.traceDebug(logger, traceOn ->
 				exchange.getLogPrefix() + formatRequest(exchange.getRequest()) +
 						(traceOn ? ", headers=" + formatHeaders(exchange.getRequest().getHeaders()) : ""));
-
+		// HttpWebHandlerAdapter处理请求时,会交给WebHandler,注意WebHandler可能是装饰类,用来实现过滤器,异常处理等操作
 		return getDelegate().handle(exchange)
 				.doOnSuccess(aVoid -> logResponse(exchange))
 				.onErrorResume(ex -> handleUnresolvedError(exchange, ex))
