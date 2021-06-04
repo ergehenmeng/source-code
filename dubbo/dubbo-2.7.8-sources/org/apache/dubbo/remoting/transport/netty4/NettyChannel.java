@@ -43,7 +43,7 @@ final class NettyChannel extends AbstractChannel {
 
     private static final Logger logger = LoggerFactory.getLogger(NettyChannel.class);
     /**
-     * the cache for netty channel and dubbo channel
+     * the cache for netty channel and dubbo channel 如果一个服务即提供服务又访问其他服务,则该缓存包含服务端链接和客户端链接
      */
     private static final ConcurrentMap<Channel, NettyChannel> CHANNEL_MAP = new ConcurrentHashMap<Channel, NettyChannel>();
     /**

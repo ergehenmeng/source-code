@@ -121,18 +121,18 @@ public class ReferenceAnnotationBeanPostProcessor extends AbstractAnnotationBean
     @Override
     protected Object doGetInjectedBean(AnnotationAttributes attributes, Object bean, String beanName, Class<?> injectedType,
                                        InjectionMetadata.InjectedElement injectedElement) throws Exception {
-        /**
-         * The name of bean that annotated Dubbo's {@link Service @Service} in local Spring {@link ApplicationContext}
-         */
+    
+        // The name of bean that annotated Dubbo's {@link Service @Service} in local Spring {@link ApplicationContext}
+        // @Reference标示的Bean名字默认是ServiceBean:接口名:版本号
         String referencedBeanName = buildReferencedBeanName(attributes, injectedType);
-
-        /**
-         * The name of bean that is declared by {@link Reference @Reference} annotation injection
-         */
+        
+        
+        // The name of bean that is declared by {@link Reference @Reference} annotation injection
+        // @Reference的id作为该bean是否创建的key,如果没有则
         String referenceBeanName = getReferenceBeanName(attributes, injectedType);
 
         ReferenceBean referenceBean = buildReferenceBeanIfAbsent(referenceBeanName, attributes, injectedType);
-
+        
         boolean localServiceBean = isLocalServiceBean(referencedBeanName, referenceBean, attributes);
 
         prepareReferenceBean(referencedBeanName, referenceBean, localServiceBean);
@@ -146,7 +146,7 @@ public class ReferenceAnnotationBeanPostProcessor extends AbstractAnnotationBean
 
     /**
      * Register an instance of {@link ReferenceBean} as a Spring Bean
-     *
+     * 将生成ReferenceBean交由spring容器管理
      * @param referencedBeanName The name of bean that annotated Dubbo's {@link Service @Service} in the Spring {@link ApplicationContext}
      * @param referenceBean      the instance of {@link ReferenceBean} is about to register into the Spring {@link ApplicationContext}
      * @param attributes         the {@link AnnotationAttributes attributes} of {@link Reference @Reference}
@@ -161,7 +161,7 @@ public class ReferenceAnnotationBeanPostProcessor extends AbstractAnnotationBean
         ConfigurableListableBeanFactory beanFactory = getBeanFactory();
 
         String beanName = getReferenceBeanName(attributes, interfaceClass);
-
+        // 该bean已经被标示为@DubboService, 只需要注册一下别名即可
         if (localServiceBean) {  // If @Service bean is local one
             /**
              * Get  the @Service's BeanDefinition from {@link BeanFactory}
@@ -228,7 +228,7 @@ public class ReferenceAnnotationBeanPostProcessor extends AbstractAnnotationBean
 
     /**
      * Is Local Service bean or not?
-     *
+     * 注入的bean是否在本地已经被@DubboService标注(即是否已经在spring容器中了)
      * @param referencedBeanName the bean name to the referenced bean
      * @return If the target referenced bean is existed, return <code>true</code>, or <code>false</code>
      * @since 2.7.6

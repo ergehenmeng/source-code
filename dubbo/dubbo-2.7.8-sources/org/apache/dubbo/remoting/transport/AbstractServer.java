@@ -52,9 +52,9 @@ public abstract class AbstractServer extends AbstractEndpoint implements Remotin
     private InetSocketAddress bindAddress;
     private int accepts;
     private int idleTimeout;
-
+    // 实际netty处理的handler = NettyServerHandler(NettyServer(MultiMessageHandler(HeartbeatHandler(AllChannelHandler(DecodeHandler(HeaderExchangeHandler(DubboProtocol#requestHandler)))))))
     private ExecutorRepository executorRepository = ExtensionLoader.getExtensionLoader(ExecutorRepository.class).getDefaultExtension();
-
+    // handler 等同于 MultiMessageHandler(HeartbeatHandler(AllChannelHandler(DecodeHandler(HeaderExchangeHandler(DubboProtocol#requestHandler)))));
     public AbstractServer(URL url, ChannelHandler handler) throws RemotingException {
         super(url, handler);
         localAddress = getUrl().toInetSocketAddress();

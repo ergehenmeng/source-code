@@ -45,7 +45,7 @@ public class DubboClassPathBeanDefinitionScanner extends ClassPathBeanDefinition
         setEnvironment(environment);
 
         setResourceLoader(resourceLoader);
-
+        // 注册内置BeanPostProcessor对象
         registerAnnotationConfigProcessors(registry);
 
     }

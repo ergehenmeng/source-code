@@ -125,11 +125,11 @@ public class ServiceClassPostProcessor implements BeanDefinitionRegistryPostProc
     @Override
     public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
 
-        // @since 2.7.5
+        // @since 2.7.5 已经将该类作为监听添加到spring中,又将该类作为bean加入spring中
         registerInfrastructureBean(registry, DubboBootstrapApplicationListener.BEAN_NAME, DubboBootstrapApplicationListener.class);
 
         Set<String> resolvedPackagesToScan = resolvePackagesToScan(packagesToScan);
-
+        // 将@DubboService注册到spring容器中
         if (!CollectionUtils.isEmpty(resolvedPackagesToScan)) {
             registerServiceBeans(resolvedPackagesToScan, registry);
         } else {
@@ -168,9 +168,9 @@ public class ServiceClassPostProcessor implements BeanDefinitionRegistryPostProc
             // Finds all BeanDefinitionHolders of @Service whether @ComponentScan scans or not.
             Set<BeanDefinitionHolder> beanDefinitionHolders =
                     findServiceBeanDefinitionHolders(scanner, packageToScan, registry, beanNameGenerator);
-
+            // 将上述类扫描到的Bean以ServiceBean类型,二次注入到Spring容器中
             if (!CollectionUtils.isEmpty(beanDefinitionHolders)) {
-                // 将上述类包装成ServiceBean类型,再次注入到Spring容器中
+                
                 for (BeanDefinitionHolder beanDefinitionHolder : beanDefinitionHolders) {
                     registerServiceBean(beanDefinitionHolder, registry, scanner);
                 }
@@ -292,7 +292,7 @@ public class ServiceClassPostProcessor implements BeanDefinitionRegistryPostProc
         AbstractBeanDefinition serviceBeanDefinition =
                 buildServiceBeanDefinition(service, serviceAnnotationAttributes, interfaceClass, annotatedServiceBeanName);
 
-        // ServiceBean Bean name
+        // ServiceBean Bean name ServiceBean:Class:Version
         String beanName = generateServiceBeanName(serviceAnnotationAttributes, interfaceClass);
 
         if (scanner.checkCandidate(beanName, serviceBeanDefinition)) { // check duplicated candidate bean

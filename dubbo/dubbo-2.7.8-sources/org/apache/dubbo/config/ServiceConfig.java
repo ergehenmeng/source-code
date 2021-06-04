@@ -218,7 +218,7 @@ public class ServiceConfig<T> extends ServiceConfigBase<T> {
         // Use default configs defined explicitly with global scope
         completeCompoundConfigs();
         checkDefault();
-        checkProtocol();
+        checkProtocol(); // 初始化协议配置信息,如果没有采用默认的
         // init some null configuration.
         List<ConfigInitializer> configInitializers = ExtensionLoader.getExtensionLoader(ConfigInitializer.class)
                 .getActivateExtension(URL.valueOf("configInitializer://"), (String[]) null);
@@ -246,7 +246,7 @@ public class ServiceConfig<T> extends ServiceConfigBase<T> {
             } catch (ClassNotFoundException e) {
                 throw new IllegalStateException(e.getMessage(), e);
             }
-            checkInterfaceAndMethods(interfaceClass, getMethods());
+            checkInterfaceAndMethods(interfaceClass, getMethods()); // 检测接口方法相关配置???
             checkRef();
             generic = Boolean.FALSE.toString();
         }
@@ -455,7 +455,7 @@ public class ServiceConfig<T> extends ServiceConfigBase<T> {
         // don't export when none is configured
         if (!SCOPE_NONE.equalsIgnoreCase(scope)) {
 
-            // export to local if the config is not remote (export to remote only when config is remote)
+            // export to local if the config is not remote (export to remote only when config is remote) 本地导出
             if (!SCOPE_REMOTE.equalsIgnoreCase(scope)) {
                 exportLocal(url);
             }
@@ -485,7 +485,7 @@ public class ServiceConfig<T> extends ServiceConfigBase<T> {
                         if (StringUtils.isNotEmpty(proxy)) {
                             registryURL = registryURL.addParameter(PROXY_KEY, proxy);
                         }
-
+                        // 默认javassist方式生成代理对象
                         Invoker<?> invoker = PROXY_FACTORY.getInvoker(ref, (Class) interfaceClass, registryURL.addParameterAndEncoded(EXPORT_KEY, url.toFullString()));
                         DelegateProviderMetaDataInvoker wrapperInvoker = new DelegateProviderMetaDataInvoker(invoker, this);
 
@@ -525,7 +525,7 @@ public class ServiceConfig<T> extends ServiceConfigBase<T> {
                 .setHost(LOCALHOST_VALUE)
                 .setPort(0)
                 .build();
-        Exporter<?> exporter = PROTOCOL.export(
+        Exporter<?> exporter = PROTOCOL.export( // JavassistProxyFactory#getInvoker 通过字节码生成接口的代理对象
                 PROXY_FACTORY.getInvoker(ref, (Class) interfaceClass, local));
         exporters.add(exporter);
         logger.info("Export dubbo service " + interfaceClass.getName() + " to local registry url : " + local);

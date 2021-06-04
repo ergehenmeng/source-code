@@ -509,7 +509,7 @@ public class DubboBootstrap extends GenericEventListener {
     }
 
     /**
-     * Initialize
+     * Initialize 初始化dubbo
      */
     public void initialize() {
         if (!initialized.compareAndSet(false, true)) {
@@ -1056,7 +1056,7 @@ public class DubboBootstrap extends GenericEventListener {
 
     /**
      * Add an instance of {@link EventListener}
-     *
+     * 添加事件监听器
      * @param listener {@link EventListener}
      * @return {@link DubboBootstrap}
      */

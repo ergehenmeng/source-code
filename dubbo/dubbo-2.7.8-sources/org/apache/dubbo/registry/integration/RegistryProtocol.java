@@ -174,8 +174,8 @@ public class RegistryProtocol implements Protocol {
     }
 
     private void register(URL registryUrl, URL registeredProviderUrl) {
-        Registry registry = registryFactory.getRegistry(registryUrl);
-        registry.register(registeredProviderUrl);
+        Registry registry = registryFactory.getRegistry(registryUrl);// 创建zk链接服务
+        registry.register(registeredProviderUrl);// 将url地址拼接好注册到zk上
     }
 
     private void registerStatedUrl(URL registryUrl, URL registeredProviderUrl, boolean registered) {
@@ -188,9 +188,9 @@ public class RegistryProtocol implements Protocol {
 
     @Override
     public <T> Exporter<T> export(final Invoker<T> originInvoker) throws RpcException {
-        URL registryUrl = getRegistryUrl(originInvoker);
+        URL registryUrl = getRegistryUrl(originInvoker); // 替换注册中心类型 默认zookeeper
         // url to export locally
-        URL providerUrl = getProviderUrl(originInvoker);
+        URL providerUrl = getProviderUrl(originInvoker);// 暴露到注册中心的url???
 
         // Subscribe the override data
         // FIXME When the provider subscribes, it will affect the scene : a certain JVM exposes the service and call
@@ -201,7 +201,7 @@ public class RegistryProtocol implements Protocol {
         overrideListeners.put(overrideSubscribeUrl, overrideSubscribeListener);
 
         providerUrl = overrideUrlWithConfig(providerUrl, overrideSubscribeListener);
-        //export invoker
+        // export invoker 暴露本地服务(启动服务器)
         final ExporterChangeableWrapper<T> exporter = doLocalExport(originInvoker, providerUrl);
 
         // url to registry
@@ -249,7 +249,7 @@ public class RegistryProtocol implements Protocol {
     @SuppressWarnings("unchecked")
     private <T> ExporterChangeableWrapper<T> doLocalExport(final Invoker<T> originInvoker, URL providerUrl) {
         String key = getCacheKey(originInvoker);
-
+        // 导出时依旧会通过ProtocolFilterWrapper等一系列包装,同时添加上过滤器Filter
         return (ExporterChangeableWrapper<T>) bounds.computeIfAbsent(key, s -> {
             Invoker<?> invokerDelegate = new InvokerDelegate<>(originInvoker, providerUrl);
             return new ExporterChangeableWrapper<>((Exporter<T>) protocol.export(invokerDelegate), originInvoker);

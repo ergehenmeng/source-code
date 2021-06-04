@@ -151,7 +151,7 @@ public class ProtocolFilterWrapper implements Protocol {
     public <T> Exporter<T> export(Invoker<T> invoker) throws RpcException {
         if (UrlUtils.isRegistry(invoker.getUrl())) {
             return protocol.export(invoker);
-        }
+        }// 如果导出为DubboProtocol时需要添加Filter
         return protocol.export(buildInvokerChain(invoker, SERVICE_FILTER_KEY, CommonConstants.PROVIDER));
     }
 

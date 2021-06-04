@@ -86,20 +86,20 @@ import static org.apache.dubbo.rpc.protocol.dubbo.Constants.ON_DISCONNECT_KEY;
 import static org.apache.dubbo.rpc.protocol.dubbo.Constants.OPTIMIZER_KEY;
 import static org.apache.dubbo.rpc.protocol.dubbo.Constants.SHARE_CONNECTIONS_KEY;
 
-
 /**
+ * 服务端: 导出本地接口, 启动netty服务, 将
  * dubbo protocol support.
  */
 public class DubboProtocol extends AbstractProtocol {
 
     public static final String NAME = "dubbo";
-
+    // dubbo服务器默认端口号
     public static final int DEFAULT_PORT = 20880;
     private static final String IS_CALLBACK_SERVICE_INVOKE = "_isCallBackServiceInvoke";
     private static DubboProtocol INSTANCE;
 
     /**
-     * <host:port,Exchanger>
+     * <host:port,Exchanger> 客户端与多服务端链接信息
      */
     private final Map<String, List<ReferenceCountExchangeClient>> referenceClientMap = new ConcurrentHashMap<>();
     private final ConcurrentMap<String, Object> locks = new ConcurrentHashMap<>();
@@ -232,7 +232,7 @@ public class DubboProtocol extends AbstractProtocol {
                 NetUtils.filterLocalHost(channel.getUrl().getIp())
                         .equals(NetUtils.filterLocalHost(address.getAddress().getHostAddress()));
     }
-
+    // 根据远程调用的参数信息在本地导出接口列表中查找符合要求的Invoker
     Invoker<?> getInvoker(Channel channel, Invocation inv) throws RemotingException {
         boolean isCallBackServiceInvoke = false;
         boolean isStubServiceInvoke = false;
@@ -309,7 +309,7 @@ public class DubboProtocol extends AbstractProtocol {
     private void openServer(URL url) {
         // find server.
         String key = url.getAddress();
-        //client can export a service which's only for server to invoke
+        // client can export a service which's only for server to invoke
         boolean isServer = url.getParameter(IS_SERVER_KEY, true);
         if (isServer) {
             ProtocolServer server = serverMap.get(key);
@@ -342,7 +342,7 @@ public class DubboProtocol extends AbstractProtocol {
         }
 
         ExchangeServer server;
-        try {// requestHandler是否核心的收发处理类
+        try {// requestHandler在此处代表用于接收远程接口调用的请求数据并进行处理
             server = Exchangers.bind(url, requestHandler);
         } catch (RemotingException e) {
             throw new RpcException("Fail to start server(url: " + url + ") " + e.getMessage(), e);
@@ -358,7 +358,7 @@ public class DubboProtocol extends AbstractProtocol {
 
         return new DubboProtocolServer(server);
     }
-
+    // 序列化?????
     private void optimizeSerialization(URL url) throws RpcException {
         String className = url.getParameter(OPTIMIZER_KEY, "");
         if (StringUtils.isEmpty(className) || optimizers.contains(className)) {

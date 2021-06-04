@@ -59,12 +59,12 @@ import static org.apache.dubbo.spring.boot.util.DubboUtils.DUBBO_SCAN_PREFIX;
 @Configuration
 @AutoConfigureAfter(DubboRelaxedBindingAutoConfiguration.class)
 @EnableConfigurationProperties(DubboConfigurationProperties.class)
-@EnableDubboConfig
+@EnableDubboConfig // 注册ReferenceAnnotationBeanPostProcessor及DubboBootstrapApplicationListener等
 public class DubboAutoConfiguration implements ApplicationContextAware, BeanDefinitionRegistryPostProcessor {
 
     /**
      * Creates {@link ServiceClassPostProcessor} Bean
-     *
+     * 是一个BeanPostProcessor,主要是将@DubboService标注的类交于Spring容器管理
      * @param packagesToScan the packages to scan
      * @return {@link ServiceClassPostProcessor}
      */
@@ -84,7 +84,7 @@ public class DubboAutoConfiguration implements ApplicationContextAware, BeanDefi
                     = new DubboLifecycleComponentApplicationListener();
             dubboLifecycleComponentApplicationListener.setApplicationContext(applicationContext);
             context.addApplicationListener(dubboLifecycleComponentApplicationListener);
-
+            // 事件监听,主要是暴露服务或者引用
             DubboBootstrapApplicationListener dubboBootstrapApplicationListener = new DubboBootstrapApplicationListener();
             dubboBootstrapApplicationListener.setApplicationContext(applicationContext);
             context.addApplicationListener(dubboBootstrapApplicationListener);
@@ -94,7 +94,7 @@ public class DubboAutoConfiguration implements ApplicationContextAware, BeanDefi
     @Override
     public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
         // Remove the BeanDefinitions of ApplicationListener from DubboBeanUtils#registerCommonBeans(BeanDefinitionRegistry)
-        // TODO Refactoring in Dubbo 2.7.9
+        // TODO Refactoring in Dubbo 2.7.9 @EnableDubboConfig会自动注入DubboBootstrapApplicationListener,DubboLifecycleComponentApplicationListener,此处移除,通过监听进行方式启动Dubbo
         removeBeanDefinition(registry, DubboLifecycleComponentApplicationListener.BEAN_NAME);
         removeBeanDefinition(registry, DubboBootstrapApplicationListener.BEAN_NAME);
     }

@@ -576,7 +576,7 @@ public abstract class AbstractConfig implements Serializable {
      * Add {@link AbstractConfig instance} into {@link ConfigManager}
      * <p>
      * Current method will invoked by Spring or Java EE container automatically, or should be triggered manually.
-     *
+     * 将当前对象添加Dubbo全局配置中
      * @see ConfigManager#addConfig(AbstractConfig)
      * @since 2.7.5
      */

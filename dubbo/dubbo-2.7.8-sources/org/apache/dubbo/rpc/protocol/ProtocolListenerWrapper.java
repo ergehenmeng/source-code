@@ -61,7 +61,7 @@ public class ProtocolListenerWrapper implements Protocol {
         if (UrlUtils.isRegistry(invoker.getUrl())) {
             return protocol.export(invoker);
         }
-        return new ListenerExporterWrapper<T>(protocol.export(invoker),
+        return new ListenerExporterWrapper<T>(protocol.export(invoker),// 如果导出为DubboProtocol时需要特殊处理
                 Collections.unmodifiableList(ExtensionLoader.getExtensionLoader(ExporterListener.class)
                         .getActivateExtension(invoker.getUrl(), EXPORTER_LISTENER_KEY)));
     }

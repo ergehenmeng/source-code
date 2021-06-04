@@ -70,7 +70,7 @@ public class NettyServer extends AbstractServer implements RemotingServer {
 
     private EventLoopGroup bossGroup;
     private EventLoopGroup workerGroup;
-
+    // ChannelHandler就是真实处理客户端链接的
     public NettyServer(URL url, ChannelHandler handler) throws RemotingException {
         // you can customize name and type of client thread pool by THREAD_NAME_KEY and THREADPOOL_KEY in CommonConstants.
         // the handler will be wrapped: MultiMessageHandler->HeartbeatHandler->handler
@@ -90,7 +90,7 @@ public class NettyServer extends AbstractServer implements RemotingServer {
         workerGroup = NettyEventLoopFactory.eventLoopGroup(
                 getUrl().getPositiveParameter(IO_THREADS_KEY, Constants.DEFAULT_IO_THREADS),
                 "NettyServerWorker");
-
+        // 核心业务处理类, 实际上委托给了 NettyServer
         final NettyServerHandler nettyServerHandler = new NettyServerHandler(getUrl(), this);
         channels = nettyServerHandler.getChannels();
 
@@ -109,7 +109,7 @@ public class NettyServer extends AbstractServer implements RemotingServer {
                             ch.pipeline().addLast("negotiation",
                                     SslHandlerInitializer.sslServerHandler(getUrl(), nettyServerHandler));
                         }
-                        ch.pipeline()
+                        ch.pipeline()// 指定编解码处理器
                                 .addLast("decoder", adapter.getDecoder())
                                 .addLast("encoder", adapter.getEncoder())
                                 .addLast("server-idle-handler", new IdleStateHandler(0, 0, idleTimeout, MILLISECONDS))
