@@ -90,7 +90,7 @@ public class ServletContextInitializerBeans extends AbstractCollection<ServletCo
 		this.sortedList = Collections.unmodifiableList(sortedInitializers);
 		logMappings(this.initializers);
 	}
-
+	// 添加Filter,Servlet,EventListener
 	private void addServletContextInitializerBeans(ListableBeanFactory beanFactory) {
 		for (Class<? extends ServletContextInitializer> initializerType : this.initializerTypes) {
 			for (Entry<String, ? extends ServletContextInitializer> initializerBean : getOrderedBeansOfType(beanFactory,
@@ -151,13 +151,13 @@ public class ServletContextInitializerBeans extends AbstractCollection<ServletCo
 	protected void addAdaptableBeans(ListableBeanFactory beanFactory) {
 		MultipartConfigElement multipartConfig = getMultipartConfig(beanFactory);
 		addAsRegistrationBean(beanFactory, Servlet.class, new ServletRegistrationBeanAdapter(multipartConfig));
-		addAsRegistrationBean(beanFactory, Filter.class, new FilterRegistrationBeanAdapter());
-		for (Class<?> listenerType : ServletListenerRegistrationBean.getSupportedTypes()) {
+		addAsRegistrationBean(beanFactory, Filter.class, new FilterRegistrationBeanAdapter()); // 将Filter类型的bean添加到initializers中
+		for (Class<?> listenerType : ServletListenerRegistrationBean.getSupportedTypes()) { // 将事件类型的Bean添加到initializers中
 			addAsRegistrationBean(beanFactory, EventListener.class, (Class<EventListener>) listenerType,
 					new ServletListenerRegistrationBeanAdapter());
 		}
 	}
-
+	// 文件上传配置信息
 	private MultipartConfigElement getMultipartConfig(ListableBeanFactory beanFactory) {
 		List<Entry<String, MultipartConfigElement>> beans = getOrderedBeansOfType(beanFactory,
 				MultipartConfigElement.class);

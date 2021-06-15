@@ -226,7 +226,7 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 		prepareWebApplicationContext(servletContext); // 将ServletContext添加上下文对象中
 		registerApplicationScope(servletContext); // 注册application级别的scope
 		WebApplicationContextUtils.registerEnvironmentBeans(getBeanFactory(), servletContext); // 注册ServletContext配置信息
-		for (ServletContextInitializer beans : getServletContextInitializerBeans()) {
+		for (ServletContextInitializer beans : getServletContextInitializerBeans()) { // 将Filter等注册到Tomcat容器中
 			beans.onStartup(servletContext);
 		}
 	}
