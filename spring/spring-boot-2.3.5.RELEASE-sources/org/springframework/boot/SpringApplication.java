@@ -453,7 +453,7 @@ public class SpringApplication {
 			return this.environment;
 		}
 		switch (this.webApplicationType) {
-		case SERVLET:
+		case SERVLET: // 创建时会调用customizePropertySources方法初始化web及系统默认配置信息
 			return new StandardServletEnvironment();
 		case REACTIVE:
 			return new StandardReactiveWebEnvironment();

@@ -28,7 +28,7 @@ import org.springframework.util.ReflectionUtils;
 
 /**
  * A collection of {@link SpringApplicationRunListener}.
- *
+ * 上下文运行监听程序 默认只有一个实现EventPublishingRunListener, 是通过读取spring.factories加载的
  * @author Phillip Webb
  */
 class SpringApplicationRunListeners {
