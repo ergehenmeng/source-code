@@ -39,7 +39,7 @@ import org.springframework.util.ObjectUtils;
  * {@code DisposableBeanAdapter} to begin with. However, with alternative serialization
  * mechanisms, {@code DisposableBeanAdapter.writeReplace} might not get used at all, so we
  * defensively mark this post-processor's field state as {@code transient}.
- *
+ * 将ApplicationListener添加到上下文中,如果applicationEventMulticaster不为空,同样会添加一份到applicationEventMulticaster中
  * @author Juergen Hoeller
  * @since 4.3.4
  */

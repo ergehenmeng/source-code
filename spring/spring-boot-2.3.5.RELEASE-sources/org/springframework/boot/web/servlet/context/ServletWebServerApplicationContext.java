@@ -127,12 +127,12 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 	}
 
 	/**
-	 * Register ServletContextAwareProcessor.
+	 * Register ServletContextAwareProcessor. 添加servlet容器相关bean
 	 * @see ServletContextAwareProcessor
 	 */
 	@Override
 	protected void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
-		beanFactory.addBeanPostProcessor(new WebApplicationContextServletContextAwareProcessor(this));
+		beanFactory.addBeanPostProcessor(new WebApplicationContextServletContextAwareProcessor(this)); // 用来注入ServletContextAware对象
 		beanFactory.ignoreDependencyInterface(ServletContextAware.class);
 		registerWebApplicationScopes();
 	}
@@ -188,7 +188,7 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 			catch (ServletException ex) {
 				throw new ApplicationContextException("Cannot initialize servlet context", ex);
 			}
-		}
+		}// 重新设置ServletContext配置信息到环境配置中
 		initPropertySources();
 	}
 
@@ -223,9 +223,9 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 	}
 
 	private void selfInitialize(ServletContext servletContext) throws ServletException {
-		prepareWebApplicationContext(servletContext);
-		registerApplicationScope(servletContext);
-		WebApplicationContextUtils.registerEnvironmentBeans(getBeanFactory(), servletContext);
+		prepareWebApplicationContext(servletContext); // 将ServletContext添加上下文对象中
+		registerApplicationScope(servletContext); // 注册application级别的scope
+		WebApplicationContextUtils.registerEnvironmentBeans(getBeanFactory(), servletContext); // 注册ServletContext配置信息
 		for (ServletContextInitializer beans : getServletContextInitializerBeans()) {
 			beans.onStartup(servletContext);
 		}
@@ -237,7 +237,7 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 		// Register as ServletContext attribute, for ContextCleanupListener to detect it.
 		servletContext.setAttribute(ServletContextScope.class.getName(), appScope);
 	}
-
+	// 注册Scope
 	private void registerWebApplicationScopes() {
 		ExistingWebApplicationScopes existingScopes = new ExistingWebApplicationScopes(getBeanFactory());
 		WebApplicationContextUtils.registerWebApplicationScopes(getBeanFactory());

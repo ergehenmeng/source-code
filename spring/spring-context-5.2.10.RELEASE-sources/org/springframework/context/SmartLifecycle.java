@@ -56,7 +56,7 @@ package org.springframework.context;
  * {@code SmartLifecycle} bean instance will usually get initialized on startup
  * of the application context in any case. As a consequence, the bean definition
  * lazy-init flag has very limited actual effect on {@code SmartLifecycle} beans.
- *
+ * 实现自动调用生命周期方法, 如果直接实现Lifecycle,则需要手动调用ApplicationContext.start()方法启动
  * @author Mark Fisher
  * @author Juergen Hoeller
  * @author Sam Brannen
