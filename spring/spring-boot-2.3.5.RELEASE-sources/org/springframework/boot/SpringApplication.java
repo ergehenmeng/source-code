@@ -305,7 +305,7 @@ public class SpringApplication {
 		listeners.starting();
 		try {
 			ApplicationArguments applicationArguments = new DefaultApplicationArguments(args);
-			ConfigurableEnvironment environment = prepareEnvironment(listeners, applicationArguments);
+			ConfigurableEnvironment environment = prepareEnvironment(listeners, applicationArguments);// 创建配置环境
 			configureIgnoreBeanInfo(environment);
 			Banner printedBanner = printBanner(environment);
 			context = createApplicationContext();
@@ -340,10 +340,10 @@ public class SpringApplication {
 			ApplicationArguments applicationArguments) {
 		// Create and configure the environment
 		ConfigurableEnvironment environment = getOrCreateEnvironment();
-		configureEnvironment(environment, applicationArguments.getSourceArgs());
-		ConfigurationPropertySources.attach(environment);
-		listeners.environmentPrepared(environment);
-		bindToSpringApplication(environment);
+		configureEnvironment(environment, applicationArguments.getSourceArgs()); // 加载默认转换器, 加载命令行解析器, 设置profile.active
+		ConfigurationPropertySources.attach(environment); // 添加 ConfigurationPropertySourcesPropertySource ???
+		listeners.environmentPrepared(environment); // 触发事件
+		bindToSpringApplication(environment); // 将application.yaml文件中的配置属性设置到SpringApplication对象中(spring.main开头的)
 		if (!this.isCustomEnvironment) {
 			environment = new EnvironmentConverter(getClassLoader()).convertEnvironmentIfNecessary(environment,
 					deduceEnvironmentClass());
@@ -365,10 +365,10 @@ public class SpringApplication {
 
 	private void prepareContext(ConfigurableApplicationContext context, ConfigurableEnvironment environment,
 			SpringApplicationRunListeners listeners, ApplicationArguments applicationArguments, Banner printedBanner) {
-		context.setEnvironment(environment);
-		postProcessApplicationContext(context);
-		applyInitializers(context);
-		listeners.contextPrepared(context);
+		context.setEnvironment(environment); // 覆盖默认的环境配置
+		postProcessApplicationContext(context); // 设置ConversionService转换器配置
+		applyInitializers(context); // 调用 ApplicationContextInitializer#initialize 方法
+		listeners.contextPrepared(context); // 事件通知
 		if (this.logStartupInfo) {
 			logStartupInfo(context.getParent() == null);
 			logStartupProfileInfo(context);
@@ -389,8 +389,8 @@ public class SpringApplication {
 		// Load the sources
 		Set<Object> sources = getAllSources();
 		Assert.notEmpty(sources, "Sources must not be empty");
-		load(context, sources.toArray(new Object[0]));
-		listeners.contextLoaded(context);
+		load(context, sources.toArray(new Object[0])); // 注册source对象到spring容器中
+		listeners.contextLoaded(context); // 触发事件 将listener添加到context中
 	}
 
 	private void refreshContext(ConfigurableApplicationContext context) {
@@ -474,12 +474,12 @@ public class SpringApplication {
 	 * @see #configurePropertySources(ConfigurableEnvironment, String[])
 	 */
 	protected void configureEnvironment(ConfigurableEnvironment environment, String[] args) {
-		if (this.addConversionService) {
+		if (this.addConversionService) { // 注册系统默认的转换器和格式化器
 			ConversionService conversionService = ApplicationConversionService.getSharedInstance();
 			environment.setConversionService((ConfigurableConversionService) conversionService);
-		}
+		} // 配置命令行参数解析对象
 		configurePropertySources(environment, args);
-		configureProfiles(environment, args);
+		configureProfiles(environment, args); // 配置profile.active属性, 从命令行,systemProperties, systemEnv等环境中查找
 	}
 
 	/**
