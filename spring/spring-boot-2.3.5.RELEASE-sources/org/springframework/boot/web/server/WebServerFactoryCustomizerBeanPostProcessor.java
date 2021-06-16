@@ -33,7 +33,7 @@ import org.springframework.util.Assert;
 /**
  * {@link BeanPostProcessor} that applies all {@link WebServerFactoryCustomizer} beans
  * from the bean factory to {@link WebServerFactory} beans.
- *
+ * 针对web容器进行自定义处理
  * @author Dave Syer
  * @author Phillip Webb
  * @author Stephane Nicoll

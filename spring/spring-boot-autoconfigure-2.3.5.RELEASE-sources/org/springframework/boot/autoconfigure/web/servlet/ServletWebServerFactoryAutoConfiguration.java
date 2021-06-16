@@ -47,7 +47,7 @@ import org.springframework.web.filter.ForwardedHeaderFilter;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for servlet web servers.
- *
+ * spring-mvc内嵌容器配置启动
  * @author Phillip Webb
  * @author Dave Syer
  * @author Ivan Sopov
@@ -61,16 +61,16 @@ import org.springframework.web.filter.ForwardedHeaderFilter;
 @ConditionalOnWebApplication(type = Type.SERVLET)
 @EnableConfigurationProperties(ServerProperties.class)
 @Import({ ServletWebServerFactoryAutoConfiguration.BeanPostProcessorsRegistrar.class,
-		ServletWebServerFactoryConfiguration.EmbeddedTomcat.class,
+		ServletWebServerFactoryConfiguration.EmbeddedTomcat.class, // tomcat容器
 		ServletWebServerFactoryConfiguration.EmbeddedJetty.class,
 		ServletWebServerFactoryConfiguration.EmbeddedUndertow.class })
 public class ServletWebServerFactoryAutoConfiguration {
-
+	// 系统默认的web容器配置, 可以额外添加其他的自定义处理,最后统一交由WebServerFactoryCustomizerBeanPostProcessor进行执行
 	@Bean
 	public ServletWebServerFactoryCustomizer servletWebServerFactoryCustomizer(ServerProperties serverProperties) {
 		return new ServletWebServerFactoryCustomizer(serverProperties);
 	}
-
+	// 系统默认的tomcat容器配置, 可以额外添加其他的自定义处理,最后统一交由WebServerFactoryCustomizerBeanPostProcessor进行执行
 	@Bean
 	@ConditionalOnClass(name = "org.apache.catalina.startup.Tomcat")
 	public TomcatServletWebServerFactoryCustomizer tomcatServletWebServerFactoryCustomizer(
@@ -109,7 +109,7 @@ public class ServletWebServerFactoryAutoConfiguration {
 				BeanDefinitionRegistry registry) {
 			if (this.beanFactory == null) {
 				return;
-			}
+			}// 添加web容器及web错误页面的后置处理器
 			registerSyntheticBeanIfMissing(registry, "webServerFactoryCustomizerBeanPostProcessor",
 					WebServerFactoryCustomizerBeanPostProcessor.class);
 			registerSyntheticBeanIfMissing(registry, "errorPageRegistrarBeanPostProcessor",

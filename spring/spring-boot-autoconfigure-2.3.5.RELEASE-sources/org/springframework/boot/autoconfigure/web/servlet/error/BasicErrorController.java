@@ -85,7 +85,7 @@ public class BasicErrorController extends AbstractErrorController {
 	public String getErrorPath() {
 		return null;
 	}
-
+	// 如果没有自定义的404等页面,默认取bean名字为error的view, 该类在WhitelabelErrorViewConfiguration中声明
 	@RequestMapping(produces = MediaType.TEXT_HTML_VALUE)
 	public ModelAndView errorHtml(HttpServletRequest request, HttpServletResponse response) {
 		HttpStatus status = getStatus(request);

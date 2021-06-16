@@ -124,7 +124,7 @@ import org.springframework.web.util.UrlPathHelper;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for {@link EnableWebMvc Web MVC}.
- *
+ * SpringMVC核心配置类, 转换器,视图解析器,适配器等等
  * @author Phillip Webb
  * @author Dave Syer
  * @author Andy Wilkinson
@@ -193,7 +193,7 @@ public class WebMvcAutoConfiguration {
 		private final ObjectProvider<DispatcherServletPath> dispatcherServletPath;
 
 		private final ObjectProvider<ServletRegistrationBean<?>> servletRegistrations;
-
+		// 静态资源相关统一配置定制化
 		final ResourceHandlerRegistrationCustomizer resourceHandlerRegistrationCustomizer;
 
 		public WebMvcAutoConfigurationAdapter(ResourceProperties resourceProperties, WebMvcProperties mvcProperties,
@@ -321,7 +321,7 @@ public class WebMvcAutoConfiguration {
 		public void addFormatters(FormatterRegistry registry) {
 			ApplicationConversionService.addBeans(registry, this.beanFactory);
 		}
-
+		// 添加默认静态资源配置, 用户可以额外添加静态资源配置
 		@Override
 		public void addResourceHandlers(ResourceHandlerRegistry registry) {
 			if (!this.resourceProperties.isAddMappings()) {

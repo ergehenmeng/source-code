@@ -71,7 +71,7 @@ public class ForwardedHeaderFilter extends OncePerRequestFilter {
 
 	static {
 		FORWARDED_HEADER_NAMES.add("Forwarded");
-		FORWARDED_HEADER_NAMES.add("X-Forwarded-Host");
+		FORWARDED_HEADER_NAMES.add("X-Forwarded-Host"); // 用于获取真实ip, X-Forwarded-Host: IP0, IP1, IP2 每经过一次代理都会在该字段上添加一个, IP0为客户端原始地址
 		FORWARDED_HEADER_NAMES.add("X-Forwarded-Port");
 		FORWARDED_HEADER_NAMES.add("X-Forwarded-Proto");
 		FORWARDED_HEADER_NAMES.add("X-Forwarded-Prefix");

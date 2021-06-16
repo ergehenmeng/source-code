@@ -75,7 +75,7 @@ import org.springframework.web.util.HtmlUtils;
 /**
  * {@link EnableAutoConfiguration Auto-configuration} to render errors via an MVC error
  * controller.
- *
+ * spring-mvc错误页面配置
  * @author Dave Syer
  * @author Andy Wilkinson
  * @author Stephane Nicoll
@@ -147,7 +147,7 @@ public class ErrorMvcAutoConfiguration {
 	@ConditionalOnProperty(prefix = "server.error.whitelabel", name = "enabled", matchIfMissing = true)
 	@Conditional(ErrorTemplateMissingCondition.class)
 	protected static class WhitelabelErrorViewConfiguration {
-
+		// 默认的空白错误信息
 		private final StaticView defaultErrorView = new StaticView();
 
 		@Bean(name = "error")

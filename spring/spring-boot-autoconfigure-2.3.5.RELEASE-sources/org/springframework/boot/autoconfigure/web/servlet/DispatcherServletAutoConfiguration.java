@@ -55,7 +55,7 @@ import org.springframework.web.servlet.DispatcherServlet;
  * {@link DispatcherServlet}. Should work for a standalone application where an embedded
  * web server is already present and also for a deployable application using
  * {@link SpringBootServletInitializer}.
- *
+ * DispatchServlet相关配置
  * @author Phillip Webb
  * @author Dave Syer
  * @author Stephane Nicoll
@@ -105,7 +105,7 @@ public class DispatcherServletAutoConfiguration {
 		}
 
 	}
-
+	// 将DispatchServlet包装成一个DispatcherServletRegistrationBean,添加tomcat容器时,可以做额外的配置
 	@Configuration(proxyBeanMethods = false)
 	@Conditional(DispatcherServletRegistrationCondition.class)
 	@ConditionalOnClass(ServletRegistration.class)
